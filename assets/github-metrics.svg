@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="120" viewBox="0 0 900 120">
+<rect x="0.5" y="0.5" width="899" height="119" rx="6" fill="#161b22" stroke="#30363d"/>
+<text x="450" y="55" text-anchor="middle" font-family="ui-monospace,Consolas,monospace" font-size="14" fill="#39FF88">github-metrics.svg</text>
+<text x="450" y="80" text-anchor="middle" font-family="ui-monospace,Consolas,monospace" font-size="12" fill="#8b949e">generated daily by the Metrics action: contribution calendar, streak, languages, activity</text>
+</svg>

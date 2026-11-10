@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="440" height="172" viewBox="0 0 440 172" role="img" aria-label="gone-phishing">
+<style>
+  .t{font:600 15px ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;fill:#39FF88}
+  .r{font:12px ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;fill:#8b949e}
+  .d{font:13px -apple-system,"Segoe UI",Helvetica,Arial,sans-serif;fill:#c9d1d9}
+  .p{fill:#0d1117;stroke:#30363d}
+  .pt{font:11px ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;fill:#39FF88}
+</style>
+<rect x="0.5" y="0.5" width="439" height="171" rx="6" fill="#161b22" stroke="#30363d"/>
+<g fill="#39FF88"><rect x="20" y="22" width="7" height="7"/><rect x="28" y="22" width="7" height="7"/><rect x="20" y="30" width="7" height="7"/></g>
+<text x="44" y="35" class="t">gone-phishing</text>
+<text x="420" y="35" class="r" text-anchor="end">repo &#8599;</text>
+<text x="20" y="70" class="d">Paste a link or text, get an explainable verdict.</text><text x="20" y="89" class="d">Typosquat, TLD and domain-age checks plus Safe Browsing,</text><text x="20" y="108" class="d">VirusTotal and URLhaus. Analyst view with IOCs and ATT&amp;CK.</text>
+<rect x="20" y="128" width="84" height="22" rx="11" class="p"/><text x="62.0" y="143" class="pt" text-anchor="middle">TypeScript</text><rect x="112" y="128" width="51" height="22" rx="11" class="p"/><text x="137.5" y="143" class="pt" text-anchor="middle">React</text><rect x="171" y="128" width="97" height="22" rx="11" class="p"/><text x="219.5" y="143" class="pt" text-anchor="middle">MITRE ATT&amp;CK</text><rect x="276" y="128" width="77" height="22" rx="11" class="p"/><text x="314.5" y="143" class="pt" text-anchor="middle">live demo</text>
+</svg>
