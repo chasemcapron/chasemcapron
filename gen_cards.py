@@ -14,7 +14,7 @@ PROJECTS = [
         "file": "proj-phishing.svg",
         "name": "gone-phishing",
         "desc": "Paste a link or text, get an explainable verdict. Typosquat, TLD and domain-age checks plus Safe Browsing, VirusTotal and URLhaus. Analyst view with IOCs and ATT&CK.",
-        "tags": ["TypeScript", "React", "MITRE ATT&CK", "live demo"],
+        "tags": ["TypeScript", "React", "MITRE ATT&CK", "live app"],
     },
     {
         "file": "proj-ai-security.svg",
