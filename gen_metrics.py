@@ -100,84 +100,82 @@ def main():
     total_size = sum(langs.values()) or 1
     top = [kv for kv in sorted(langs.items(), key=lambda kv: -kv[1])[:6] if kv[1] / total_size >= 0.01]
 
+
     W = 900
-    CELL, GAP = 12, 3
-    gx, gy = 52, 92
     parts = []
 
-    # stats row
-    stats = [
-        (f"{cal['totalContributions']:,}", "contributions, last year"),
-        (f"{current}", "day current streak"),
-        (f"{longest}", "day longest streak"),
-        (f"{active}", "active days"),
-    ]
-    col = (W - 48) / len(stats)
-    for i, (num, label) in enumerate(stats):
-        x = 24 + col * i + col / 2
-        parts.append(f'<text x="{x}" y="46" class="n" text-anchor="middle">{num}</text>')
-        parts.append(f'<text x="{x}" y="66" class="l" text-anchor="middle">{label}</text>')
-    parts.append(f'<line x1="24" x2="{W - 24}" y1="80" y2="80" stroke="{BORDER}"/>')
+    # ---- isometric 3D contribution map (left) ----
+    S = 12.0
+    C, HS = S * 0.866, S * 0.5          # week axis -> (C, HS), day axis -> (-C, HS)
+    HMAX = 54
+    OX, OY = 24 + 7 * C + 4, 58 + HMAX
 
-    # month labels
-    last_month = None
-    for wi, w in enumerate(weeks):
-        d0 = dt.date.fromisoformat(w["contributionDays"][0]["date"])
-        if d0.month != last_month and wi < len(weeks) - 2:
-            parts.append(f'<text x="{gx + wi * (CELL + GAP)}" y="{gy + 4}" class="m">{d0.strftime("%b")}</text>')
-            last_month = d0.month
-    # weekday labels
-    for r, name in ((1, "Mon"), (3, "Wed"), (5, "Fri")):
-        parts.append(f'<text x="{gx - 8}" y="{gy + 14 + r * (CELL + GAP) + 10}" class="m" text-anchor="end">{name}</text>')
+    def P(w, d, h=0.0):
+        return (OX + (w - d) * C, OY + (w + d) * HS - h)
 
-    # grid
+    def poly(pts, fill):
+        return '<polygon points="' + " ".join(f"{x:.1f},{y:.1f}" for x, y in pts) + f'" fill="{fill}"/>'
+
+    def shade(hexc, f):
+        r, g, b = (int(hexc[i:i + 2], 16) for i in (1, 3, 5))
+        return "#%02x%02x%02x" % (int(r * f), int(g * f), int(b * f))
+
+    cells = []
     for wi, w in enumerate(weeks):
         for d in w["contributionDays"]:
-            r = dt.date.fromisoformat(d["date"]).isoweekday() % 7  # Sun=0
-            x = gx + wi * (CELL + GAP)
-            y = gy + 14 + r * (CELL + GAP)
-            c = LEVELS[level(d["contributionCount"], mx)]
-            parts.append(
-                f'<rect x="{x}" y="{y}" width="{CELL}" height="{CELL}" rx="2" fill="{c}">'
-                f'<title>{d["date"]}: {d["contributionCount"]}</title></rect>'
-            )
-    grid_bottom = gy + 14 + 7 * (CELL + GAP)
+            r = dt.date.fromisoformat(d["date"]).isoweekday() % 7
+            cells.append((wi, r, d))
+    cells.sort(key=lambda t: (t[0] + t[1], t[0]))   # back to front
 
-    # legend
-    lx = W - 24 - 5 * (CELL + GAP) - 34
-    parts.append(f'<text x="{lx - 8}" y="{grid_bottom + 18}" class="m" text-anchor="end">less</text>')
-    for i, c in enumerate(LEVELS):
-        parts.append(f'<rect x="{lx + i * (CELL + GAP)}" y="{grid_bottom + 8}" width="{CELL}" height="{CELL}" rx="2" fill="{c}"/>')
-    parts.append(f'<text x="{lx + 5 * (CELL + GAP) + 4}" y="{grid_bottom + 18}" class="m">more</text>')
+    g = 0.12
+    for wi, r, d in cells:
+        n = d["contributionCount"]
+        lv = level(n, mx)
+        h = 3 + (HMAX * (n / mx) ** 0.5 if n else 0)
+        topc = LEVELS[lv] if n else "#262c36"
+        a, b = wi + g, wi + 1 - g
+        c0, c1 = r + g, r + 1 - g
+        # right face (+w side) and left face (+d side), then top
+        parts.append(poly([P(b, c0, h), P(b, c1, h), P(b, c1), P(b, c0)], shade(topc, 0.55)))
+        parts.append(poly([P(a, c1, h), P(b, c1, h), P(b, c1), P(a, c1)], shade(topc, 0.75)))
+        parts.append(
+            poly([P(a, c0, h), P(b, c0, h), P(b, c1, h), P(a, c1, h)], topc)[:-2]
+            + f'><title>{d["date"]}: {n}</title></polygon>'
+        )
+    map_bottom = P(len(weeks), 7)[1]
+    parts.append(f'<text x="24" y="34" class="h">contributions · last 12 months</text>')
 
-    # languages bar
-    ly = grid_bottom + 44
-    parts.append(f'<line x1="24" x2="{W - 24}" y1="{ly - 10}" y2="{ly - 10}" stroke="{BORDER}"/>')
-    parts.append(f'<text x="24" y="{ly + 14}" class="h">top languages</text>')
-    bx, bw = 24, W - 48
-    x = bx
-    shown = sum(s for _, s in top) or 1
-    parts.append(f'<clipPath id="bar"><rect x="{bx}" y="{ly + 26}" width="{bw}" height="10" rx="5"/></clipPath><g clip-path="url(#bar)">')
-    for i, (name, size) in enumerate(top):
-        w = bw * size / shown
-        parts.append(f'<rect x="{x}" y="{ly + 26}" width="{w + 0.5}" height="10" fill="{LANG_SHADES[i]}"/>')
-        x += w
-    parts.append("</g>")
-    x = bx
+    # ---- right column: stats + languages ----
+    RX = 680
+    parts.append(f'<line x1="{RX - 20}" x2="{RX - 20}" y1="24" y2="{map_bottom}" stroke="{BORDER}"/>')
+    parts.append(f'<text x="{RX}" y="58" class="big">{cal["totalContributions"]:,}</text>')
+    parts.append(f'<text x="{RX}" y="78" class="l">contributions, last year</text>')
+    y = 112
+    for num, label in ((current, "day current streak"), (longest, "day longest streak"), (active, "active days")):
+        parts.append(f'<text x="{RX}" y="{y}" class="n">{num}</text>')
+        parts.append(f'<text x="{RX + 40}" y="{y}" class="l">{label}</text>')
+        y += 26
+    y += 18
+    parts.append(f'<text x="{RX}" y="{y}" class="h">top languages</text>')
+    y += 10
+    bw = W - 24 - RX
+    shown_max = top[0][1] if top else 1
     for i, (name, size) in enumerate(top):
         pct = 100 * size / total_size
-        parts.append(f'<rect x="{x}" y="{ly + 50}" width="9" height="9" rx="2" fill="{LANG_SHADES[i]}"/>')
-        label = f"{name} {pct:.0f}%"
-        parts.append(f'<text x="{x + 14}" y="{ly + 59}" class="lg">{label}</text>')
-        x += 14 + len(label) * 7.4 + 22
-    H = ly + 78
+        y += 24
+        parts.append(f'<text x="{RX}" y="{y}" class="lg">{name}</text>')
+        parts.append(f'<text x="{W - 24}" y="{y}" class="m" text-anchor="end">{pct:.0f}%</text>')
+        parts.append(f'<rect x="{RX}" y="{y + 5}" width="{bw}" height="4" rx="2" fill="#262c36"/>')
+        parts.append(f'<rect x="{RX}" y="{y + 5}" width="{max(4, bw * size / shown_max):.1f}" height="4" rx="2" fill="{LANG_SHADES[i]}"/>')
 
     updated = dt.datetime.now(dt.timezone.utc).strftime("%Y-%m-%d")
-    parts.append(f'<text x="{W - 24}" y="{ly + 14}" class="m" text-anchor="end">updated {updated}</text>')
+    H = int(max(map_bottom, y + 20)) + 28
+    parts.append(f'<text x="{W - 24}" y="{H - 16}" class="m" text-anchor="end">updated {updated}</text>')
 
     svg = f'''<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" viewBox="0 0 {W} {H}" role="img" aria-label="GitHub contributions for {USER}">
 <style>
-  .n{{font:700 26px ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;fill:{ACCENT}}}
+  .big{{font:700 34px ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;fill:{ACCENT}}}
+  .n{{font:700 18px ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;fill:{ACCENT}}}
   .l{{font:12px -apple-system,"Segoe UI",Helvetica,Arial,sans-serif;fill:{MUTED}}}
   .m{{font:11px ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;fill:{MUTED}}}
   .h{{font:600 13px ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;fill:{ACCENT}}}
@@ -189,7 +187,7 @@ def main():
 '''
     out = Path(__file__).parent / "assets" / "github-metrics.svg"
     out.write_text(svg, encoding="utf-8")
-    print(f"wrote {out}: {cal['totalContributions']} contributions, streak {current}/{longest}, langs {[n for n, _ in top]}")
+    print(f"wrote {out}: {cal['totalContributions']} contributions, streak {current}/{longest}, langs {[n for n, _ in top]}, {W}x{H}")
 
 
 if __name__ == "__main__":
