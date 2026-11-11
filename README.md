@@ -48,6 +48,7 @@ Security-minded MIS grad student at **Texas A&M**. I build practical defensive t
 <a href="https://gonefishing-app.vercel.app"><img src="https://img.shields.io/badge/gone%20phishing-161b22?style=for-the-badge&logo=fishshell&logoColor=39FF88" alt="Gone Phishing app"></a>
 <a href="https://github.com/chasemcapron/JobFinder"><img src="https://img.shields.io/badge/jobfinder-161b22?style=for-the-badge&logo=github&logoColor=39FF88" alt="JobFinder repo"></a>
 <a href="https://github.com/chasemcapron/Data_Mining"><img src="https://img.shields.io/badge/data%20mining-161b22?style=for-the-badge&logo=r&logoColor=39FF88" alt="Data_Mining repo"></a>
+<a href="https://github.com/chasemcapron/learning-log"><img src="https://img.shields.io/badge/learning%20log-161b22?style=for-the-badge&logo=data:image/svg%2bxml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZD0iTTEyIDYuNUMxMCA1IDcgNC41IDMgNXYxM2M0LS41IDcgMCA5IDEuNSAyLTEuNSA1LTIgOS0xLjVWNWMtNC0uNS03IDAtOSAxLjV6IiBmaWxsPSJub25lIiBzdHJva2U9IiMzOUZGODgiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPjxwYXRoIGQ9Ik0xMiA2LjV2MTMiIHN0cm9rZT0iIzM5RkY4OCIgc3Ryb2tlLXdpZHRoPSIyIi8+PC9zdmc+" alt="Learning log"></a>
 <a href="https://github.com/chasemcapron?tab=repositories"><img src="https://img.shields.io/badge/all%20repos-161b22?style=for-the-badge&logo=github&logoColor=39FF88" alt="All repositories"></a>
 
 </div>
