@@ -84,13 +84,3 @@ out.mkdir(exist_ok=True)
 for p in PROJECTS:
     (out / p["file"]).write_text(card(p), encoding="utf-8")
     print("wrote", out / p["file"])
-
-# Placeholder until the Metrics GitHub Action overwrites it.
-placeholder = f'''<svg xmlns="http://www.w3.org/2000/svg" width="900" height="120" viewBox="0 0 900 120">
-<rect x="0.5" y="0.5" width="899" height="119" rx="6" fill="{BG}" stroke="{BORDER}"/>
-<text x="450" y="55" text-anchor="middle" font-family="ui-monospace,Consolas,monospace" font-size="14" fill="{ACCENT}">github-metrics.svg</text>
-<text x="450" y="80" text-anchor="middle" font-family="ui-monospace,Consolas,monospace" font-size="12" fill="{MUTED}">generated daily by the Metrics action: contribution calendar, streak, languages, activity</text>
-</svg>
-'''
-(out / "github-metrics.svg").write_text(placeholder, encoding="utf-8")
-print("wrote placeholder github-metrics.svg")
