@@ -15,6 +15,7 @@ IGNORED_LANGS = {"HTML", "CSS", "SCSS"}
 
 BG, BORDER, ACCENT, TEXT, MUTED = "#161b22", "#30363d", "#39FF88", "#e6edf3", "#8b949e"
 LEVELS = ["#1c2128", "#0e4429", "#006d32", "#26a641", "#39FF88"]
+BAR_LEVELS = ["#2a313c", "#1f8a4c", "#28b862", "#33e078", "#39FF88"]
 LANG_SHADES = ["#39FF88", "#26c46a", "#1f9e55", "#177a42", "#10572f", "#0a3a20"]
 
 QUERY = """
@@ -105,9 +106,9 @@ def main():
     parts = []
 
     # ---- isometric 3D contribution map (left) ----
-    S = 12.0
+    S = 12.5
     C, HS = S * 0.866, S * 0.5          # week axis -> (C, HS), day axis -> (-C, HS)
-    HMAX = 54
+    HMAX = 90
     OX, OY = 24 + 7 * C + 4, 58 + HMAX
 
     def P(w, d, h=0.0):
@@ -132,12 +133,12 @@ def main():
         n = d["contributionCount"]
         lv = level(n, mx)
         h = 3 + (HMAX * (n / mx) ** 0.5 if n else 0)
-        topc = LEVELS[lv] if n else "#262c36"
+        topc = BAR_LEVELS[lv] if n else "#2a313c"
         a, b = wi + g, wi + 1 - g
         c0, c1 = r + g, r + 1 - g
         # right face (+w side) and left face (+d side), then top
-        parts.append(poly([P(b, c0, h), P(b, c1, h), P(b, c1), P(b, c0)], shade(topc, 0.55)))
-        parts.append(poly([P(a, c1, h), P(b, c1, h), P(b, c1), P(a, c1)], shade(topc, 0.75)))
+        parts.append(poly([P(b, c0, h), P(b, c1, h), P(b, c1), P(b, c0)], shade(topc, 0.45)))
+        parts.append(poly([P(a, c1, h), P(b, c1, h), P(b, c1), P(a, c1)], shade(topc, 0.7)))
         parts.append(
             poly([P(a, c0, h), P(b, c0, h), P(b, c1, h), P(a, c1, h)], topc)[:-2]
             + f'><title>{d["date"]}: {n}</title></polygon>'
@@ -146,7 +147,7 @@ def main():
     parts.append(f'<text x="24" y="34" class="h">contributions · last 12 months</text>')
 
     # ---- right column: stats + languages ----
-    RX = 680
+    RX = 714
     parts.append(f'<line x1="{RX - 20}" x2="{RX - 20}" y1="24" y2="{map_bottom}" stroke="{BORDER}"/>')
     parts.append(f'<text x="{RX}" y="58" class="big">{cal["totalContributions"]:,}</text>')
     parts.append(f'<text x="{RX}" y="78" class="l">contributions, last year</text>')
