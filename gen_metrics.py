@@ -186,9 +186,28 @@ def main():
 {"".join(parts)}
 </svg>
 '''
-    out = Path(__file__).parent / "assets" / "github-metrics.svg"
-    out.write_text(svg, encoding="utf-8")
-    print(f"wrote {out}: {cal['totalContributions']} contributions, streak {current}/{longest}, langs {[n for n, _ in top]}, {W}x{H}")
+    # GitHub's image caches ignore query strings, so give every version its own
+    # file name (content hash) and point the README at it. A changed map is
+    # then a new URL that no cache has seen.
+    import hashlib, re
+    here = Path(__file__).parent
+    digest = hashlib.sha1(svg.encode()).hexdigest()[:10]
+    mdir = here / "assets" / "metrics"
+    mdir.mkdir(parents=True, exist_ok=True)
+    name = f"contributions-{digest}.svg"
+    for old in mdir.glob("contributions-*.svg"):
+        if old.name != name:
+            old.unlink()
+    (mdir / name).write_text(svg, encoding="utf-8")
+    legacy = here / "assets" / "github-metrics.svg"
+    if legacy.exists():
+        legacy.unlink()
+    readme = here / "README.md"
+    text = readme.read_text(encoding="utf-8")
+    text = re.sub(r'src="assets/(?:github-metrics\.svg[^"]*|metrics/contributions-[0-9a-f]+\.svg)"',
+                  f'src="assets/metrics/{name}"', text)
+    readme.write_text(text, encoding="utf-8")
+    print(f"wrote assets/metrics/{name}: {cal['totalContributions']} contributions, streak {current}/{longest}, langs {[n for n, _ in top]}, {W}x{H}")
 
 
 if __name__ == "__main__":
