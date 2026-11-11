@@ -47,55 +47,64 @@ FONT = {
     " ": [".....", ".....", ".....", ".....", ".....", ".....", "....."],
 }
 
-cells = set()
-cursor = None
-for li, line in enumerate(LINES):
-    oy = PAD + li * (7 + LINE_GAP)
-    for i, ch in enumerate(line):
-        ox = PAD + i * (5 + GAP)
-        for r, row in enumerate(FONT[ch]):
-            for c, v in enumerate(row):
-                if v == "X":
-                    cells.add((ox + c, oy + r))
-    if li == len(LINES) - 1:
-        cursor = (PAD + len(line) * (5 + GAP), oy + 6)
+def pixel_svg(lines, cursor=True, CELL=CELL, BG=BG):
+    """Return (svg, width, height) for the given lines in the pixel-block style."""
+    cells = set()
+    cur_pos = None
+    for li, line in enumerate(lines):
+        oy = PAD + li * (7 + LINE_GAP)
+        for i, ch in enumerate(line):
+            ox = PAD + i * (5 + GAP)
+            for r, row in enumerate(FONT[ch]):
+                for c, v in enumerate(row):
+                    if v == "X":
+                        cells.add((ox + c, oy + r))
+        if li == len(lines) - 1:
+            cur_pos = (PAD + len(line) * (5 + GAP), oy + 6)
 
-w_cells = 2 * PAD + max(len(l) * (5 + GAP) - GAP for l in LINES) + 2  # room for cursor
-h_cells = 2 * PAD + len(LINES) * 7 + (len(LINES) - 1) * LINE_GAP
-W, H = w_cells * CELL, h_cells * CELL
+    w_cells = 2 * PAD + max(len(l) * (5 + GAP) - GAP for l in lines) + (2 if cursor else 0)
+    h_cells = 2 * PAD + len(lines) * 7 + (len(lines) - 1) * LINE_GAP
+    W, H = w_cells * CELL, h_cells * CELL
 
-# Silhouette outline: every cell edge that borders an empty cell.
-segs = []
-for (x, y) in cells:
-    px, py = x * CELL, y * CELL
-    if (x, y - 1) not in cells: segs.append(f"M{px} {py}h{CELL}")
-    if (x, y + 1) not in cells: segs.append(f"M{px} {py + CELL}h{CELL}")
-    if (x - 1, y) not in cells: segs.append(f"M{px} {py}v{CELL}")
-    if (x + 1, y) not in cells: segs.append(f"M{px + CELL} {py}v{CELL}")
-outline_d = "".join(segs)
+    # Silhouette outline: every cell edge that borders an empty cell.
+    segs = []
+    for (x, y) in cells:
+        px, py = x * CELL, y * CELL
+        if (x, y - 1) not in cells: segs.append(f"M{px} {py}h{CELL}")
+        if (x, y + 1) not in cells: segs.append(f"M{px} {py + CELL}h{CELL}")
+        if (x - 1, y) not in cells: segs.append(f"M{px} {py}v{CELL}")
+        if (x + 1, y) not in cells: segs.append(f"M{px + CELL} {py}v{CELL}")
+    outline_d = "".join(segs)
 
-rects = "".join(
-    f'<rect x="{x * CELL}" y="{y * CELL}" width="{CELL}" height="{CELL}"/>'
-    for (x, y) in sorted(cells)
-)
+    rects = "".join(
+        f'<rect x="{x * CELL}" y="{y * CELL}" width="{CELL}" height="{CELL}"/>'
+        for (x, y) in sorted(cells)
+    )
 
-cx, cy = cursor
-svg = f'''<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" viewBox="0 0 {W} {H}" role="img" aria-label="{' '.join(LINES)}">
-<style>
-  .blk{{fill:{FILL};stroke:{GRID};stroke-width:0.8}}
-  .ol{{fill:none;stroke:{OUTLINE};stroke-width:2;stroke-linecap:square}}
-  .cur{{fill:{FILL};animation:blink 1.1s steps(1,end) infinite}}
-  @keyframes blink{{50%{{opacity:0}}}}
-</style>
-<rect width="{W}" height="{H}" rx="12" fill="{BG}"/>
-<path class="ol" transform="translate(10,10)" d="{outline_d}"/>
-<path class="ol" transform="translate(6,6)" d="{outline_d}"/>
-<g class="blk">{rects}</g>
-<rect class="cur" x="{cx * CELL}" y="{cy * CELL}" width="{CELL}" height="{CELL}"/>
-</svg>
-'''
+    cx, cy = cur_pos
+    cur = f'<rect class="cur" x="{cx * CELL}" y="{cy * CELL}" width="{CELL}" height="{CELL}"/>' if cursor else ''
+    svg = f'''<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" viewBox="0 0 {W} {H}" role="img" aria-label="{' '.join(lines)}">
+    <style>
+      .blk{{fill:{FILL};stroke:{GRID};stroke-width:{CELL / 20:g}}}
+      .ol{{fill:none;stroke:{OUTLINE};stroke-width:{CELL / 8:g};stroke-linecap:square}}
+      .cur{{fill:{FILL};animation:blink 1.1s steps(1,end) infinite}}
+      @keyframes blink{{50%{{opacity:0}}}}
+    </style>
+    <rect width="{W}" height="{H}" rx="12" fill="{BG}"/>
+    <path class="ol" transform="translate({CELL * 0.625:g},{CELL * 0.625:g})" d="{outline_d}"/>
+    <path class="ol" transform="translate({CELL * 0.375:g},{CELL * 0.375:g})" d="{outline_d}"/>
+    <g class="blk">{rects}</g>
+    {cur}
+    </svg>
+    '''
 
-out = Path(__file__).parent / "assets" / "header.svg"
-out.parent.mkdir(exist_ok=True)
-out.write_text(svg, encoding="utf-8")
-print(f"wrote {out} ({W}x{H})")
+    svg = "\n".join(l[4:] if l.startswith("    ") else l for l in svg.split("\n"))
+    return svg, W, H
+
+
+if __name__ == "__main__":
+    svg, W, H = pixel_svg(LINES)
+    out = Path(__file__).parent / "assets" / "header.svg"
+    out.parent.mkdir(exist_ok=True)
+    out.write_text(svg, encoding="utf-8")
+    print(f"wrote {out} ({W}x{H})")
