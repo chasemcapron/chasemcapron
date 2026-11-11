@@ -6,9 +6,9 @@
 
 <br>
 
-[![Portfolio](https://img.shields.io/badge/portfolio-161b22?style=for-the-badge&logo=googlechrome&logoColor=39FF88)](https://chasemcapron.github.io/chasecapron_io/)
-[![LinkedIn](https://img.shields.io/badge/linkedin-161b22?style=for-the-badge&logo=linkedin&logoColor=39FF88)](https://www.linkedin.com/in/chasemcapron/)
-[![Email](https://img.shields.io/badge/email-161b22?style=for-the-badge&logo=microsoftoutlook&logoColor=39FF88)](mailto:chasecapron@outlook.com)
+<a href="https://chasemcapron.github.io/chasecapron_io/"><img src="https://img.shields.io/badge/portfolio-161b22?style=for-the-badge&logo=data:image/svg%2bxml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+IDxyZWN0IHg9IjIiIHk9IjMuNSIgd2lkdGg9IjIwIiBoZWlnaHQ9IjE3IiByeD0iMi41IiBmaWxsPSJub25lIiBzdHJva2U9IiMzOUZGODgiIHN0cm9rZS13aWR0aD0iMiIvPiA8cGF0aCBkPSJNNi41IDlsMy41IDMtMy41IDMiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzM5RkY4OCIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4gPHBhdGggZD0iTTEyIDE1LjVoNS41IiBzdHJva2U9IiMzOUZGODgiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PC9zdmc+" alt="Portfolio"></a>
+<a href="https://www.linkedin.com/in/chasemcapron/"><img src="https://img.shields.io/badge/linkedin-161b22?style=for-the-badge&logo=data:image/svg%2bxml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+IDxyZWN0IHg9IjEuNSIgeT0iMS41IiB3aWR0aD0iMjEiIGhlaWdodD0iMjEiIHJ4PSIzLjUiIGZpbGw9IiMzOUZGODgiLz4gPGNpcmNsZSBjeD0iNy4yIiBjeT0iNyIgcj0iMS43IiBmaWxsPSIjMTYxYjIyIi8+IDxyZWN0IHg9IjUuNyIgeT0iMTAiIHdpZHRoPSIzIiBoZWlnaHQ9IjguNSIgZmlsbD0iIzE2MWIyMiIvPiA8cGF0aCBkPSJNMTEgMTBoMi45djEuM2MuNS0uOSAxLjctMS42IDMuMS0xLjYgMi42IDAgMy4yIDEuNyAzLjIgMy45djQuOWgtM3YtNC4zYzAtMS4xLS4zLTEuOS0xLjQtMS45LTEuMiAwLTEuOC45LTEuOCAyLjF2NC4xSDExeiIgZmlsbD0iIzE2MWIyMiIvPjwvc3ZnPg==" alt="LinkedIn"></a>
+<a href="mailto:chasecapron@outlook.com"><img src="https://img.shields.io/badge/email-161b22?style=for-the-badge&logo=data:image/svg%2bxml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+IDxyZWN0IHg9IjIiIHk9IjQuNSIgd2lkdGg9IjIwIiBoZWlnaHQ9IjE1IiByeD0iMi41IiBmaWxsPSJub25lIiBzdHJva2U9IiMzOUZGODgiIHN0cm9rZS13aWR0aD0iMiIvPiA8cGF0aCBkPSJNMyA2LjVsOSA2LjUgOS02LjUiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzM5RkY4OCIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+PC9zdmc+" alt="Email"></a>
 
 </div>
 
