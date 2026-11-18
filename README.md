@@ -26,7 +26,7 @@ Security-minded MIS grad student at **Texas A&M**. I build practical defensive t
 
 <div align="center">
 
-<img src="assets/metrics/contributions-a1c0411797.svg" alt="GitHub metrics: contribution calendar, streak, languages and activity" width="100%">
+<img src="assets/metrics/contributions-705b27c55a.svg" alt="GitHub metrics: contribution calendar, streak, languages and activity" width="100%">
 
 </div>
 
